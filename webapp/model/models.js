@@ -41,7 +41,11 @@ sap.ui.define([
                 return {
                     deleteButtonEnabled: false,
                     editButtonEnabled: false,
-                    unselectButtonEnabled: false
+                    unselectButtonEnabled: false,
+                    addFilePathDialogValues: {
+                        gptTypeSelectedKey: undefined,
+                        gptTypeSelectedItem: undefined
+                    }
                 }
             },
             _filterInputValues: function () {

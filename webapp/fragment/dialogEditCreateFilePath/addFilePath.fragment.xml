@@ -36,14 +36,23 @@
                         <f:formElements>
                             <f:FormElement label="{i18n>gptType}">
                                 <f:fields>
-                                    <ComboBox items="{
-                                        path: '/modelListSet'
-                                    }">
+                                    <ComboBox
+                                        items="{
+                                            path: '/modelListSet'
+                                        }"
+                                        selectedKey="{jsonModel>/dialogEditCreateVariables/addFilePathDialogValues/gptTypeSelectedKey}"
+                                        selectedItem="{jsonModel>/dialogEditCreateVariables/addFilePathDialogValues/gptTypeSelectedItem}"
+                                    >
                                         <c:Item
                                             key="{Zgptid}"
                                             text="{Zgpttxt}"
                                         />
                                     </ComboBox>
+                                </f:fields>
+                            </f:FormElement>
+                            <f:FormElement label="{i18n>folderPath}">
+                                <f:fields>
+                                    <Input change="onFolderPathChange"/>
                                 </f:fields>
                             </f:FormElement>
                         </f:formElements>

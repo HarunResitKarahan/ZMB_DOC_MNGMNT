@@ -362,6 +362,18 @@ sap.ui.define(
             .setValueState("None");
           return new Token({ key: text, text: text });
         },
+        onFolderPathChange: function (oEvent) {
+          let oSource = oEvent.getSource(),
+            oText = oSource.getValue(),
+            i18n = this.getOwnerComponent().getModel("i18n");
+          if(!this.isValidFilePath(oText)) {
+            oSource.setValueState("Warning");
+            oSource.setValueStateText(i18n.getProperty("filterBarFilePathStateText"));
+          }else {
+            oSource.setValueState("None");
+            oSource.setValueStateText("");
+          }
+        },
         onFilterBarFilePathMultiInputChange: function (oEvent) {
           let oTokens = oEvent.getSource().getTokens(),
             jsonModel = this.getModel("jsonModel");
