@@ -1,0 +1,26 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+>
+    <ViewSettingsDialog confirm="._documentSortConfirm" cancel="._closeDialog">
+        <sortItems>
+            <ViewSettingsItem
+                text="{i18n>document-name}"
+                key="1"
+                selected="true"
+            />
+            <ViewSettingsItem
+                text="{i18n>document-type}"
+                key="2"
+            />
+            <ViewSettingsItem
+                text="{i18n>uploadedBy}"
+                key="3"
+            />
+            <ViewSettingsItem
+                text="{i18n>status}"
+                key="4"
+            />
+        </sortItems>
+    </ViewSettingsDialog>
+</core:FragmentDefinition>

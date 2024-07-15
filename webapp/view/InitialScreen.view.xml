@@ -1,0 +1,312 @@
+<mvc:View
+    controllerName="com.martur.zmbdocumentmanagment.controller.InitialScreen"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:table="sap.ui.table"
+>
+    <f:DynamicPage showFooter="true">
+        <f:title>
+            <f:DynamicPageTitle>
+                <f:heading>
+                    <vm:VariantManagement standardItemText="{i18n>standart}" />
+                </f:heading>
+                <!-- <f:actions>
+                    <ToolbarSpacer />
+                    <Button
+                        text="{i18n>path-list-add}"
+                        type="Accept"
+                        icon="sap-icon://request"
+                        iconFirst="false"
+                    />
+                </f:actions> -->
+            </f:DynamicPageTitle>
+        </f:title>
+        <f:header>
+            <f:DynamicPageHeader>
+                <f:content>
+                    <!--<fb:FilterBar-->
+                    <!--    useToolbar="false"-->
+                    <!--    showFilterConfiguration="false"-->
+                    <!--    showGoOnFB="false"-->
+                    <!-->-->
+                    <!--    <fb:filterGroupItems>-->
+                    <!--        <fb:FilterGroupItem-->
+                    <!--            name="filePath"-->
+                    <!--            label="{i18n>filePath}"-->
+                    <!--            groupName="pathGroup1"-->
+                    <!--            visibleInFilterBar="true"-->
+                    <!--        >-->
+                    <!--            <fb:control>-->
+                    <!--                <MultiInput-->
+                    <!--                    id="idFilterBarFilePathMultiInput"-->
+                    <!--                    tokenUpdate="onFilterBarFilePathMultiInputChange"-->
+                    <!--                    showValueHelp="false"-->
+                    <!--                />-->
+                    <!--            </fb:control>-->
+                    <!--        </fb:FilterGroupItem>-->
+                    <!--    </fb:filterGroupItems>-->
+                    <!--</fb:FilterBar>-->
+                    <fb:FilterBar
+                        useToolbar="false"
+                        showFilterConfiguration="false"
+                        visible="{jsonModel>/filterInputConfigurations/secondFilterBarVisibility}"
+                    >
+                        <fb:filterGroupItems>
+                            <fb:FilterGroupItem
+                                name="documentName"
+                                label="{i18n>document-name}"
+                                groupName="Group1"
+                                visibleInFilterBar="true"
+                            >
+                                <fb:control>
+                                    <Input
+                                        valueHelpOnly="true"
+                                        valueHelpIconSrc="sap-icon://curriculum"
+                                        value="{jsonModel>/filterInputValues/documentName}"
+                                        showValueHelp="true"
+                                        valueHelpRequest="_openInputTableValueHelp('vDialogDocumentNameFilter')"
+                                    />
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem
+                                name="documentType"
+                                label="{i18n>document-type}"
+                                groupName="Group1"
+                                visibleInFilterBar="true"
+                            >
+                                <fb:control>
+                                    <MultiInput
+                                        suggestionItems="{
+                                            path: 'jsonModel>/documentTypeSearchHelpSet'
+                                        }"
+                                        showValueHelp="false"
+                                        startSuggestion="0"
+                                    >
+                                        <core:Item
+                                            key="{jsonModel>key}"
+                                            text="{jsonModel>value}"
+                                        />
+                                    </MultiInput>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem
+                                name="documentStatus"
+                                label="{i18n>documentStatus}"
+                                groupName="Group1"
+                                visibleInFilterBar="true"
+                            >
+                                <fb:control>
+                                    <MultiInput
+                                        suggestionItems="{
+                                            path: 'jsonModel>/documentStatusSearchHelpSet'
+                                        }"
+                                        showValueHelp="false"
+                                        showSuggestion="true"
+                                        maxTokens="3"
+                                        startSuggestion="0"
+                                    >
+                                        <core:Item
+                                            key="{jsonModel>key}"
+                                            text="{jsonModel>value}"
+                                        />
+                                        <!-- <MenuItem key="{jsonModel>key}" text="{jsonModel>value}" icon="{jsonModel>iconSrc}" ></MenuItem> -->
+                                        <!-- <core:ListItem
+                                            key="{jsonModel>key}"
+                                            text="{jsonModel>value}"
+                                            icon="{jsonModel>iconSrc}"
+                                        /> -->
+                                    </MultiInput>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                        </fb:filterGroupItems>
+                    </fb:FilterBar>
+                </f:content>
+            </f:DynamicPageHeader>
+        </f:header>
+        <f:content>
+            <table:TreeTable
+                id="idDocumentTreeTable"
+                selectionMode="MultiToggle"
+                rows="{jsonModel>/documentListSet}"
+                busy="{jsonModel>/documentTreeTableBusy}"
+                alternateRowColors="true"
+                visibleRowCountMode="Auto"
+            >
+                <table:extension>
+                    <OverflowToolbar style="Clear">
+                        <Title text="{i18n>files} ({= ${jsonModel>/documentListSet}.length})" />
+                        <ToolbarSpacer />
+                        <Button
+                            icon="sap-icon://decline"
+                            text="{i18n>unselectAll}"
+                            tooltip="{i18n>unselectAll}"
+                            type="Ghost"
+                        />
+                        <SearchField
+                            placeholder="{i18n>search---}"
+                            width="15rem"
+                            liveChange="onTreeTableBasicSearch"
+                        />
+                        <Button
+                            icon="sap-icon://add"
+                            text="{i18n>createEditFilePath}"
+                            tooltip="{i18n>createEditFilePath}"
+                            type="Ghost"
+                            press="onEditCreateFilePathPress"
+                        />
+                        <Button
+                            icon="sap-icon://sort"
+                            tooltip="{i18n>sorting}"
+                            type="Ghost"
+                            press="_openDialog('vDialogDocumentSort')"
+                        />
+                        <Button
+                            icon="sap-icon://refresh"
+                            tooltip="{i18n>refresh}"
+                            type="Ghost"
+                        />
+                    </OverflowToolbar>
+                </table:extension>
+                <table:columns>
+                    <!-- <table:Column width="4.4rem">
+                        <Label text="" />
+                        <table:template>
+                            <core:Icon src="{jsonModel>iconSrc}" />
+                        </table:template>
+                    </table:Column> -->
+                    <table:Column
+                        width="auto"
+                        minWidth="235"
+                        autoResizable="true"
+                        sortProperty="fileName"
+                        filterProperty="fileName"
+                        filterOperator="Contains"
+                    >
+                        <Label text="{i18n>document-name}" />
+                        <table:template>
+                            <FlexBox>
+                                <core:Icon
+                                    class="sapUiTinyMarginBegin sapUiSmallMarginEnd"
+                                    src="{jsonModel>iconSrc}"
+                                />
+                                <Text
+                                    text="{jsonModel>fileName}"
+                                    wrapping="false"
+                                />
+                            </FlexBox>
+                        </table:template>
+                    </table:Column>
+                    <table:Column
+                        width="auto"
+                        autoResizable="true"
+                        sortProperty="fileType"
+                    >
+                        <Label text="{i18n>document-type}" />
+                        <table:template>
+                            <Text
+                                text="{jsonModel>fileType}"
+                                wrapping="false"
+                            />
+                        </table:template>
+                    </table:Column>
+                    <table:Column
+                        width="8rem"
+                        autoResizable="true"
+                        sortProperty="uploadedBy"
+                    >
+                        <Label text="{i18n>uploadedBy}" />
+                        <table:template>
+                            <Text
+                                text="{jsonModel>uploadedBy}"
+                                wrapping="false"
+                            />
+                        </table:template>
+                    </table:Column>
+                    <table:Column
+                        width="12rem"
+                        autoResizable="true"
+                        hAlign="Center"
+                        sortProperty="status"
+                    >
+                        <Label text="{i18n>status}" />
+                        <table:template>
+                            <ObjectStatus
+                                text="{
+                                    path: 'jsonModel>status',
+                                    formatter: '.formatter.setStatusText'
+                                }"
+                                icon="{
+                                    path: 'jsonModel>status',
+                                    formatter: '.formatter.setStatusIcon'
+                                }"
+                                state="{
+                                    path: 'jsonModel>status',
+                                    formatter: '.formatter.setStatusState'
+                                }"
+                            />
+                        </table:template>
+                    </table:Column>
+                    <table:Column
+                        width="5rem"
+                        autoResizable="true"
+                        hAlign="Center"
+                    >
+                        <Label text="{i18n>exclude}" />
+                        <table:template>
+                            <CheckBox enabled="{= ${jsonModel>status} === '02'}" />
+                        </table:template>
+                    </table:Column>
+                    <table:Column
+                        width="5rem"
+                        autoResizable="true"
+                        hAlign="Center"
+                    >
+                        <Label text="" />
+                        <table:template>
+                            <Button
+                                icon="sap-icon://download"
+                                type="Ghost"
+                            />
+                        </table:template>
+                    </table:Column>
+                </table:columns>
+                <!-- <table:footer>
+                    <OverflowToolbar>
+                        <ToolbarSpacer />
+                        <Button
+                            text="Kaydet"
+                            icon="sap-icon://accept"
+                        />
+                    </OverflowToolbar>
+                </table:footer> -->
+                <table:noData>
+                    <IllustratedMessage />
+                </table:noData>
+            </table:TreeTable>
+        </f:content>
+        <f:footer>
+            <OverflowToolbar
+                design="Info"
+                enabled="false"
+            >
+                <ToolbarSpacer />
+                <!-- <Button
+                    text="{i18n>path-list-add}"
+                    type="Emphasized"
+                    icon="sap-icon://request"
+                /> -->
+                <ToolbarSpacer />
+                <Button
+                    text="{i18n>save}"
+                    icon="sap-icon://save"
+                    type="Accept"
+                />
+            </OverflowToolbar>
+        </f:footer>
+    </f:DynamicPage>
+</mvc:View>

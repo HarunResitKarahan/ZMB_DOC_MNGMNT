@@ -1,0 +1,178 @@
+<c:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:c="sap.ui.core"
+	xmlns:table="sap.ui.table"
+>
+	<Dialog
+		draggable="true"
+		title="{i18n>createEditFilePath}"
+		escapeHandler="._closeDialog"
+	>
+		<content>
+			<table:Table
+				selectionMode="Single"
+				selectionBehavior="Row"
+				rows="{jsonModel>/modelFolderListSet}"
+				busy="{jsonModel>/documentTreeTableBusy}"
+				alternateRowColors="true"
+				visibleRowCountMode="Auto"
+			>
+				<table:extension>
+					<OverflowToolbar style="Clear">
+						<Title text="{i18n>filePath}s ({= ${jsonModel>/modelFolderListSet}.length})" />
+						<ToolbarSpacer />
+						<SearchField
+							placeholder="{i18n>search---}"
+							width="15rem"
+							liveChange="onDialogEditCreateTableBasicSearch"
+						/>
+						<!-- <Button
+                            icon="sap-icon://sort"
+                            tooltip="{i18n>sorting}"
+                            type="Ghost"
+                            press="_openDialog('vDialogDocumentSort')"
+                        /> -->
+						<Button
+							icon="sap-icon://refresh"
+							tooltip="{i18n>refresh}"
+							type="Ghost"
+							press="_fetchFilePaths"
+						/>
+					</OverflowToolbar>
+				</table:extension>
+				<table:columns>
+					<table:Column
+						width="auto"
+						autoResizable="true"
+						sortProperty="Kytno"
+						filterProperty="Kytno"
+						filterOperator="Contains"
+					>
+						<Label text="{i18n>recordNo}" />
+						<table:template>
+							<FlexBox>
+								<c:Icon
+									class="sapUiTinyMarginBegin sapUiSmallMarginEnd"
+									src="{jsonModel>iconSrc}"
+								/>
+								<Text
+									text="{
+										path: 'jsonModel>Kytno',
+										type: 'sap.ui.model.odata.type.String',
+										constraints: {
+											isDigitSequence: true,
+											maxLength: 10
+										}
+									}"
+									wrapping="false"
+								/>
+							</FlexBox>
+						</table:template>
+					</table:Column>
+					<table:Column
+						width="auto"
+						autoResizable="true"
+						sortProperty="Zgptid"
+					>
+						<Label text="{i18n>gptId}" />
+						<table:template>
+							<Text
+								text="{jsonModel>Zgptid}"
+								wrapping="false"
+							/>
+						</table:template>
+					</table:Column>
+					<table:Column
+						width="auto"
+						autoResizable="true"
+						sortProperty="ZfolderPath"
+					>
+						<Label text="{i18n>folderPath}" />
+						<table:template>
+							<Text
+								text="{jsonModel>ZfolderPath}"
+								wrapping="false"
+							/>
+						</table:template>
+					</table:Column>
+					<table:Column
+						width="auto"
+						autoResizable="true"
+						sortProperty="Ernam"
+					>
+						<Label text="{i18n>createdBy}" />
+						<table:template>
+							<Text
+								text="{jsonModel>Ernam}"
+								wrapping="false"
+							/>
+						</table:template>
+					</table:Column>
+					<table:Column
+						width="auto"
+						autoResizable="true"
+						sortProperty="Erdat"
+					>
+						<Label text="{i18n>createDate}" />
+						<table:template>
+							<Text
+								text="{
+									path: 'jsonModel>Erdat',
+									type: 'sap.ui.model.type.DateTime',
+									formatOptions: {
+										pattern: 'dd/MM/yyyy'
+									}
+								}"
+								wrapping="false"
+							/>
+						</table:template>
+					</table:Column>
+					<table:Column
+						width="auto"
+						autoResizable="true"
+						sortProperty="Aenam"
+					>
+						<Label text="{i18n>changedBy}" />
+						<table:template>
+							<Text
+								text="{jsonModel>Aenam}"
+								wrapping="false"
+							/>
+						</table:template>
+					</table:Column>
+					<table:Column
+						width="auto"
+						autoResizable="true"
+						sortProperty="Aedat"
+					>
+						<Label text="{i18n>changeDate}" />
+						<table:template>
+							<Text
+								text="{
+									path: 'jsonModel>Aedat',
+									type: 'sap.ui.model.type.DateTime',
+									formatOptions: {
+										pattern: 'dd/MM/yyyy'
+									}
+								}"
+								wrapping="false"
+							/>
+						</table:template>
+					</table:Column>
+				</table:columns>
+				<table:noData>
+					<IllustratedMessage illustrationSize="Base"/>
+				</table:noData>
+			</table:Table>
+		</content>
+		<!-- <beginButton>
+			<Button
+				icon="sap-icon://save"
+				text="{i18n>save}"
+			/>
+		</beginButton> -->
+		<endButton>
+			<Button text="{i18n>cancel}" press="_closeDialog"/>
+		</endButton>
+	</Dialog>
+</c:FragmentDefinition>

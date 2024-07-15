@@ -1,0 +1,58 @@
+<core:FragmentDefinition
+    xmlns="sap.ui.comp.valuehelpdialog"
+    xmlns:m="sap.m"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:core="sap.ui.core"
+>
+    <ValueHelpDialog
+        title="{i18n>document-name}"
+        ok=".onDocumentNameValueHelpOkPress"
+        cancel="._closeDialog"
+        supportRanges="false"
+        supportMultiselect="false"
+        filterMode="false"
+        stretch="true"
+        escapeHandler="._closeDialog"
+        key="key"
+        descriptionKey="fileName"
+    >
+        <filterBar>
+            <fb:FilterBar
+                advancedMode="true"
+                search=".onDocumentNameFilterBarSearch"
+                isRunningInValueHelpDialog="true"
+            >
+                <fb:filterGroupItems>
+                    <fb:FilterGroupItem
+                        groupName="__$INTERNAL$"
+                        name="documentName"
+                        label="{i18n>document-name}"
+                        visibleInFilterBar="false"
+                    >
+                        <fb:control>
+                            <m:Input
+                                suggestionItems="{jsonModel>/documentListSet}"
+                                showSuggestion="true"
+                                startSuggestion="0"
+                            >
+                                <m:suggestionItems>
+                                    <core:Item text="{jsonModel>fileName}" />
+                                </m:suggestionItems>
+                                <!-- <m:suggestionRows>
+                                    <m:ColumnListItem>
+                                        <m:Tree>
+                                            <m:StandardTreeItem
+                                                icon="{jsonModel>iconSrc}"
+                                                title="{jsonModel>fileName}"
+                                            />
+                                        </m:Tree>
+                                    </m:ColumnListItem>
+                                </m:suggestionRows> -->
+                            </m:Input>
+                        </fb:control>
+                    </fb:FilterGroupItem>
+                </fb:filterGroupItems>
+            </fb:FilterBar>
+        </filterBar>
+    </ValueHelpDialog>
+</core:FragmentDefinition>

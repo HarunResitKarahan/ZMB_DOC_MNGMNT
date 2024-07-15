@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:sap="http://www.sap.com/Protocols/SAPData">
+    <edmx:DataServices m:DataServiceVersion="2.0">
+        <Schema Namespace="ZUB_AI_GOOGLE_LLM_SRV" xml:lang="tr" sap:schema-version="1" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+            <Annotation Term="Core.SchemaVersion" String="1.0.0" xmlns="http://docs.oasis-open.org/odata/ns/edm"/>
+            <EntityType Name="PostGoogleLLM" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="pernr"/>
+                </Key>
+                <Property Name="pernr" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:label="Personel no." sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="answer" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Answer" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="question" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Question" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="getPersonalInfo" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Pernr"/>
+                </Key>
+                <Property Name="Pernr" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:label="Personel no." sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Ename" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="Çlşn/bşv.adı" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Werks" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Pers.alanı" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="WerksText" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false" sap:label="Pers.aln.metni" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Btrtl" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Pers.alt alanı" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="BtrtlText" Type="Edm.String" Nullable="false" MaxLength="15" sap:unicode="false" sap:label="Alt aln.metni" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Orgeh" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:label="Org.birimi" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="OrgehText" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="Tanım" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="IsAgreed" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="IsOngoing" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="modelList" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Zgptid"/>
+                </Key>
+                <Property Name="Zgptid" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:label="GPT ID" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Spras" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:label="Dil" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Zgpttxt" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="GPT Metni" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="header" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Guid"/>
+                </Key>
+                <Property Name="Mandt" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="Üst birim" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Guid" Type="Edm.Guid" Nullable="false" sap:unicode="false" sap:label="GUID 16" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Zgptid" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:label="GPT ID" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Uname" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:label="Kullanıcı adı" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="HeaderText" Type="Edm.String" Nullable="false" MaxLength="99999999" sap:unicode="false" sap:label="Chat Header Şifreli" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Loekz" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Silme göstergesi" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Timestamp" Type="Edm.DateTime" Nullable="false" Precision="0" sap:unicode="false" sap:label="Zaman damgası" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="detail" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="HeaderGuid"/>
+                    <PropertyRef Name="Guid"/>
+                </Key>
+                <Property Name="Mandt" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="Üst birim" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="HeaderGuid" Type="Edm.Guid" Nullable="false" sap:unicode="false" sap:label="GUID 16" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Guid" Type="Edm.Guid" Nullable="false" sap:unicode="false" sap:label="GUID 16" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Ztype" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="Question or Response" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ItemText" Type="Edm.String" Nullable="false" MaxLength="99999999" sap:unicode="false" sap:label="Chat Item Şifreli" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="LikeUnlike" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="Like &amp; Unlike" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Starred" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Starred" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Timestamp" Type="Edm.DateTime" Nullable="false" Precision="0" sap:unicode="false" sap:label="Zaman damgası" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityContainer Name="ZUB_AI_GOOGLE_LLM_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
+                <EntitySet Name="PostGoogleLLMSet" EntityType="ZUB_AI_GOOGLE_LLM_SRV.PostGoogleLLM" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="getPersonalInfoSet" EntityType="ZUB_AI_GOOGLE_LLM_SRV.getPersonalInfo" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="modelListSet" EntityType="ZUB_AI_GOOGLE_LLM_SRV.modelList" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+                <EntitySet Name="headerSet" EntityType="ZUB_AI_GOOGLE_LLM_SRV.header" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+                <EntitySet Name="detailSet" EntityType="ZUB_AI_GOOGLE_LLM_SRV.detail" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+            </EntityContainer>
+            <atom:link rel="self" href="http://localhost:8080/webidedispatcher/destinations/MarturDev/sap/opu/odata/sap/ZUB_AI_GOOGLE_LLM_SRV/$metadata" xmlns:atom="http://www.w3.org/2005/Atom"/>
+            <atom:link rel="latest-version" href="http://localhost:8080/webidedispatcher/destinations/MarturDev/sap/opu/odata/sap/ZUB_AI_GOOGLE_LLM_SRV/$metadata" xmlns:atom="http://www.w3.org/2005/Atom"/>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>
