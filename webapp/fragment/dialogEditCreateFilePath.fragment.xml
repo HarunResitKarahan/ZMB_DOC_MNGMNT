@@ -7,20 +7,42 @@
 		draggable="true"
 		title="{i18n>createEditFilePath}"
 		escapeHandler="._closeDialog"
+		class="sapUiContentPadding"
 	>
 		<content>
 			<table:Table
 				selectionMode="Single"
-				selectionBehavior="Row"
+				selectionBehavior="RowOnly"
 				rows="{jsonModel>/modelFolderListSet}"
 				busy="{jsonModel>/documentTreeTableBusy}"
 				alternateRowColors="true"
 				visibleRowCountMode="Auto"
+				rowSelectionChange="onEditCreateTableSelectionChange"
 			>
 				<table:extension>
 					<OverflowToolbar style="Clear">
 						<Title text="{i18n>filePath}s ({= ${jsonModel>/modelFolderListSet}.length})" />
 						<ToolbarSpacer />
+						<Button
+							icon="sap-icon://add"
+							tooltip="{i18n>add}"
+							type="Ghost"
+							press="_addFilePath"
+						/>
+						<Button
+							icon="sap-icon://edit"
+							tooltip="{i18n>edit}"
+							type="Ghost"
+							enabled="{jsonModel>/dialogEditCreateVariables/editButtonEnabled}"
+							press="_editSelectedRow"
+						/>
+						<Button
+							icon="sap-icon://delete"
+							tooltip="{i18n>delete}"
+							type="Ghost"
+							enabled="{jsonModel>/dialogEditCreateVariables/deleteButtonEnabled}"
+							press="_deleteSelectedRow"
+						/>
 						<SearchField
 							placeholder="{i18n>search---}"
 							width="15rem"
@@ -33,10 +55,17 @@
                             press="_openDialog('vDialogDocumentSort')"
                         /> -->
 						<Button
+							icon="sap-icon://clear-all"
+							tooltip="{i18n>unselectAll}"
+							type="Ghost"
+							enabled="{jsonModel>/dialogEditCreateVariables/unselectButtonEnabled}"
+							press="._unselectAll"
+						/>
+						<Button
 							icon="sap-icon://refresh"
 							tooltip="{i18n>refresh}"
 							type="Ghost"
-							press="_fetchFilePaths"
+							press="._fetchFilePaths"
 						/>
 					</OverflowToolbar>
 				</table:extension>

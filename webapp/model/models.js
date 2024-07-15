@@ -30,10 +30,18 @@ sap.ui.define([
                     documentStatusSearchHelpSet: this._filterInputDocumentStatusSearchHelpData(),
                     filterInputValues: this._filterInputValues(),
                     filterInputConfigurations: this._filterInputConfigurations(),
+                    dialogEditCreateVariables: this._dialogEditCreateVariables(),
                     documentListSet: [],
                     modelFolderListSet: []
                 });
                 return oModel;
+            },
+            _dialogEditCreateVariables: function () {
+                return {
+                    deleteButtonEnabled: false,
+                    editButtonEnabled: false,
+                    unselectButtonEnabled: false
+                }
             },
             _filterInputValues: function () {
                 return {

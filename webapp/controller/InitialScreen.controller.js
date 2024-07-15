@@ -50,6 +50,8 @@ sap.ui.define(
           var oFilePathMultiInput = this.getView().byId(
             "idFilterBarFilePathMultiInput"
           );
+          this.selectedEditCreateRowData = undefined;
+          this.sEditCreateTableDeletePath = undefined;
           //oFilePathMultiInput.addValidator(this._filePathValidator.bind(this));
         },
 
@@ -91,14 +93,14 @@ sap.ui.define(
             this._oDialog.destroy();
             this._oDialog = undefined;
           } catch (error) {
-            
+
           }
           try {
             this._oVHD.close();
             this._oVHD.destroy();
             this._oVHD = undefined;
           } catch (error) {
-            
+
           }
         },
         _documentSortConfirm: function (oEvent) {
@@ -395,6 +397,35 @@ sap.ui.define(
               });
           });
         },
+        _deleteSelectedRow: function (oEvent) {
+
+        },
+        _unselectAll: function (oEvent) {
+          let oTable = oEvent.getSource().getParent().getParent();
+          oTable.clearSelection();
+        },
+        onEditCreateTableSelectionChange: function (oEvent) {
+          let oSource = oEvent.getSource(),
+            jsonModel = this.getModel("jsonModel"),
+            oItemIndex = oSource.getSelectedIndex();
+          if (oItemIndex === -1) {
+            this.selectedEditCreateRowData = undefined;
+            this.sEditCreateTableDeletePath = undefined;
+            jsonModel.setProperty("/dialogEditCreateVariables", models._dialogEditCreateVariables())
+          } else {
+            let oItem = oSource.getRows()[oItemIndex],
+              oEntry = oItem.getBindingContext("jsonModel"),
+              oModel = this.getView().getModel(),
+              sObjects = oEntry.getObject();
+            this.selectedEditCreateRowData = sObjects;
+            let oData = this.selectedEditCreateRowData;
+            this.sEditCreateTableDeletePath = oModel.createKey("/modelFolderListSet", oData);
+            jsonModel.setProperty("/dialogEditCreateVariables/editButtonEnabled", true);
+            jsonModel.setProperty("/dialogEditCreateVariables/deleteButtonEnabled", true);
+            jsonModel.setProperty("/dialogEditCreateVariables/unselectButtonEnabled", true);
+          }
+
+        }
       }
     );
   }

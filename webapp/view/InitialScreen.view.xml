@@ -141,12 +141,12 @@
                     <OverflowToolbar style="Clear">
                         <Title text="{i18n>files} ({= ${jsonModel>/documentListSet}.length})" />
                         <ToolbarSpacer />
-                        <Button
-                            icon="sap-icon://decline"
+                        <!-- <Button
+                            icon="sap-icon://clear-all"
                             text="{i18n>unselectAll}"
                             tooltip="{i18n>unselectAll}"
                             type="Ghost"
-                        />
+                        /> -->
                         <SearchField
                             placeholder="{i18n>search---}"
                             width="15rem"
@@ -169,6 +169,7 @@
                             icon="sap-icon://refresh"
                             tooltip="{i18n>refresh}"
                             type="Ghost"
+                            press="_fetchFiles"
                         />
                     </OverflowToolbar>
                 </table:extension>
