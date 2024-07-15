@@ -1,0 +1,24 @@
+<c:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:c="sap.ui.core"
+>
+<Dialog
+		draggable="true"
+		title="{i18n>createEditFilePath}"
+		escapeHandler="._closeDialog"
+		class="sapUiContentPadding"
+	>
+		<content>
+        </content>
+		<beginButton>
+			<Button
+				icon="sap-icon://save"
+				text="{i18n>save}"
+                type="Accept"
+			/>
+		</beginButton>
+		<endButton>
+			<Button text="{i18n>cancel}" press="_closeDialog"/>
+		</endButton>
+	</Dialog>
+</c:FragmentDefinition>

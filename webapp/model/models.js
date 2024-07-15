@@ -32,7 +32,8 @@ sap.ui.define([
                     filterInputConfigurations: this._filterInputConfigurations(),
                     dialogEditCreateVariables: this._dialogEditCreateVariables(),
                     documentListSet: [],
-                    modelFolderListSet: []
+                    modelFolderListSet: [],
+                    modelListSet: []
                 });
                 return oModel;
             },

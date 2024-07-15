@@ -87,20 +87,49 @@ sap.ui.define(
             );
           }
         },
+        _openDialogOnADialog: function (dialogParentName, dialogName) {
+          if (!this._oDialog2) {
+            Fragment.load({
+              name: `com.martur.zmbdocumentmanagment.fragment.${dialogParentName}.${dialogName}`,
+              controller: this,
+            }).then(
+              function (oDialog) {
+                // connect dialog to the root view of this component (models, lifecycle)
+                this.getView().addDependent(oDialog);
+                oDialog.addStyleClass(
+                  this.getOwnerComponent().getContentDensityClass()
+                );
+                this._oDialog2 = oDialog
+                oDialog.open(oDialog);
+              }.bind(this)
+            );
+          }
+        },
         _closeDialog: function () {
+          try {
+            if (this._oDialog2) {
+              this._oDialog2.close();
+              this._oDialog2.destroy();
+              this._oDialog2 = undefined;
+              return;
+            }
+            
+          } catch (error) {
+            console.log(error)
+          }
           try {
             this._oDialog.close();
             this._oDialog.destroy();
             this._oDialog = undefined;
           } catch (error) {
-
+            console.log(error)
           }
           try {
             this._oVHD.close();
             this._oVHD.destroy();
             this._oVHD = undefined;
           } catch (error) {
-
+            console.log(error)
           }
         },
         _documentSortConfirm: function (oEvent) {
@@ -388,6 +417,26 @@ sap.ui.define(
               .read(sPath, {
                 success: function (oData, oResponse) {
                   jsonModel.setProperty("/modelFolderListSet", oData.results);
+                  resolve();
+                },
+                error: function (oResponse) {
+                  console.log(oResponse);
+                  reject(oResponse); // Reject the promise
+                },
+              });
+          });
+        },
+        _fetchAIModelList: function () {
+          let that = this;
+          return new Promise((resolve, reject) => {
+            var sPath = "/modelListSet",
+              jsonModel = that.getModel("jsonModel");
+            that
+              .getOwnerComponent()
+              .getModel()
+              .read(sPath, {
+                success: function (oData, oResponse) {
+                  jsonModel.setProperty("/modelListSet", oData.results);
                   resolve();
                 },
                 error: function (oResponse) {

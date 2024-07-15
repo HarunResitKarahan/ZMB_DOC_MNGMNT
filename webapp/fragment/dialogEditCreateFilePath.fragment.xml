@@ -27,7 +27,7 @@
 							icon="sap-icon://add"
 							tooltip="{i18n>add}"
 							type="Ghost"
-							press="_addFilePath"
+							press="_openDialogOnADialog('dialogEditCreateFilePath','addFilePath')"
 						/>
 						<Button
 							icon="sap-icon://edit"
