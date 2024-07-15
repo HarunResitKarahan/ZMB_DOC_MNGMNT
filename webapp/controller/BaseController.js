@@ -68,6 +68,36 @@ sap.ui.define(
           let oView = this.getView();
           oView.byId(inputId).setValueState("None");
         },
+        _validateInput: function (oInput) {
+          var sValueState = "None";
+          var bValidationError = false;
+          var oBinding = oInput.getBinding("value");
+          var selectedKey = false;
+          if (oBinding === undefined)
+            oBinding = oInput.getBinding("selectedKey");
+
+          try {
+            try {
+              selectedKey = oInput.getForceSelection() ? false : true;
+            } catch (error) {
+              selectedKey = false;
+            }
+            if (selectedKey) {
+              oBinding.getType().validateValue(oInput.getSelectedKey());
+            } else {
+              oBinding.getType().validateValue(oInput.getValue());
+            }
+          } catch (oException) {
+            // console.log(oException)
+            // oInput.setValueStateText(oException.message)
+            sValueState = "Error";
+            bValidationError = true;
+          }
+
+          oInput.setValueState(sValueState);
+
+          return bValidationError;
+        },
       }
     );
   }

@@ -37,10 +37,18 @@
                             <f:FormElement label="{i18n>gptType}">
                                 <f:fields>
                                     <ComboBox
+                                        fieldGroupIds="dialogEditCreateAddFilePathForm"
                                         items="{
                                             path: '/modelListSet'
                                         }"
-                                        selectedKey="{jsonModel>/dialogEditCreateVariables/addFilePathDialogValues/gptTypeSelectedKey}"
+                                        selectedKey="{
+                                            path: 'jsonModel>/dialogEditCreateVariables/addFilePathDialogValues/gptTypeSelectedKey',
+                                            type: 'sap.ui.model.type.String',
+                                            constraints: {
+                                                minLength: 1,
+                                                maxLength: 300
+                                            }
+                                        }"
                                         selectedItem="{jsonModel>/dialogEditCreateVariables/addFilePathDialogValues/gptTypeSelectedItem}"
                                     >
                                         <c:Item
@@ -52,7 +60,18 @@
                             </f:FormElement>
                             <f:FormElement label="{i18n>folderPath}">
                                 <f:fields>
-                                    <Input change="onFolderPathChange"/>
+                                    <Input
+                                        fieldGroupIds="dialogEditCreateAddFilePathForm"
+                                        value="{
+                                            path: 'jsonModel>/dialogEditCreateVariables/addFilePathDialogValues/folderPathValue',
+                                            type: 'sap.ui.model.type.String',
+                                            constraints: {
+                                                minLength: 1,
+                                                maxLength: 300
+                                            }
+                                        }"
+                                        change="onFolderPathChange"
+                                    />
                                 </f:fields>
                             </f:FormElement>
                         </f:formElements>
@@ -65,6 +84,7 @@
                 icon="sap-icon://save"
                 text="{i18n>save}"
                 type="Accept"
+                press="onAddFilePathSavePress"
             />
         </beginButton>
         <endButton>

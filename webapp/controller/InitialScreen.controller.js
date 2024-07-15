@@ -113,7 +113,7 @@ sap.ui.define(
               this._oDialog2 = undefined;
               return;
             }
-            
+
           } catch (error) {
             console.log(error)
           }
@@ -366,13 +366,37 @@ sap.ui.define(
           let oSource = oEvent.getSource(),
             oText = oSource.getValue(),
             i18n = this.getOwnerComponent().getModel("i18n");
-          if(!this.isValidFilePath(oText)) {
+          if (!this.isValidFilePath(oText)) {
             oSource.setValueState("Warning");
             oSource.setValueStateText(i18n.getProperty("filterBarFilePathStateText"));
-          }else {
+          } else {
             oSource.setValueState("None");
             oSource.setValueStateText("");
           }
+        },
+        onAddFilePathSavePress: function (oEvent) {
+          let [allComboBoxSources, allInputSources] = this._getDialogEditCreateAddFilePathFormElements();
+          let aInputs = [...allComboBoxSources, ...allInputSources],
+            bValidationError = false;
+
+          aInputs.forEach(function (oInput) {
+            bValidationError = that._validateInput(oInput) || bValidationError;
+          }, this);
+          if(bValidationError) {
+          }
+          return bValidationError;
+        },
+        _getDialogEditCreateAddFilePathFormElements: function () {
+          let returnArry = [],
+            allComboBoxSources = [],
+            allInputSources = [],
+            that = this;
+          let source = that.getView().getControlsByFieldGroupId("dialogEditCreateAddFilePathForm");
+          let comboBoxSource = source.filter((elmnt) => elmnt.isA("sap.m.ComboBox"));
+          let inputSource = source.filter((elmnt) => elmnt.isA("sap.m.Input"));
+          allComboBoxSources = [...allComboBoxSources, ...comboBoxSource];
+          allInputSources = [...allInputSources, ...inputSource];
+          return [allComboBoxSources, allInputSources];
         },
         onFilterBarFilePathMultiInputChange: function (oEvent) {
           let oTokens = oEvent.getSource().getTokens(),
