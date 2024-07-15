@@ -1,24 +1,68 @@
 <c:FragmentDefinition
-	xmlns="sap.m"
-	xmlns:c="sap.ui.core"
+    xmlns="sap.m"
+    xmlns:c="sap.ui.core"
+    xmlns:f="sap.ui.layout.form"
 >
-<Dialog
-		draggable="true"
-		title="{i18n>createEditFilePath}"
-		escapeHandler="._closeDialog"
-		class="sapUiContentPadding"
-	>
-		<content>
+    <Dialog
+        draggable="true"
+        title="{i18n>addFilePath}"
+        escapeHandler="._closeDialog"
+        class="sapUiContentPadding"
+    >
+        <content>
+            <f:Form
+                editable="true"
+                ariaLabelledBy="Title1"
+            >
+                <f:layout>
+                    <f:ResponsiveGridLayout
+                        labelSpanXL="3"
+                        labelSpanL="4"
+                        labelSpanM="4"
+                        labelSpanS="12"
+                        adjustLabelSpan="false"
+                        emptySpanXL="4"
+                        emptySpanL="3"
+                        emptySpanM="0"
+                        emptySpanS="0"
+                        columnsXL="1"
+                        columnsL="1"
+                        columnsM="1"
+                        singleContainerFullSize="false"
+                    />
+                </f:layout>
+                <f:formContainers>
+                    <f:FormContainer>
+                        <f:formElements>
+                            <f:FormElement label="{i18n>gptType}">
+                                <f:fields>
+                                    <ComboBox items="{
+                                        path: '/modelListSet'
+                                    }">
+                                        <c:Item
+                                            key="{Zgptid}"
+                                            text="{Zgpttxt}"
+                                        />
+                                    </ComboBox>
+                                </f:fields>
+                            </f:FormElement>
+                        </f:formElements>
+                    </f:FormContainer>
+                </f:formContainers>
+            </f:Form>
         </content>
-		<beginButton>
-			<Button
-				icon="sap-icon://save"
-				text="{i18n>save}"
+        <beginButton>
+            <Button
+                icon="sap-icon://save"
+                text="{i18n>save}"
                 type="Accept"
-			/>
-		</beginButton>
-		<endButton>
-			<Button text="{i18n>cancel}" press="_closeDialog"/>
-		</endButton>
-	</Dialog>
+            />
+        </beginButton>
+        <endButton>
+            <Button
+                text="{i18n>cancel}"
+                press="_closeDialog"
+            />
+        </endButton>
+    </Dialog>
 </c:FragmentDefinition>
