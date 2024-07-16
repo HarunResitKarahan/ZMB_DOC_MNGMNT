@@ -34,7 +34,7 @@
 							tooltip="{i18n>edit}"
 							type="Ghost"
 							enabled="{jsonModel>/dialogEditCreateVariables/editButtonEnabled}"
-							press="_editSelectedRow"
+							press="_editCreateFilePathEditSelectedRow"
 						/>
 						<Button
 							icon="sap-icon://delete"

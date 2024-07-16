@@ -54,6 +54,7 @@ sap.ui.define(
           );
           this.selectedEditCreateRowData = undefined;
           this.sEditCreateTableDeletePath = undefined;
+          this.editCreateFilePathMode = "C"
           //oFilePathMultiInput.addValidator(this._filePathValidator.bind(this));
         },
 
@@ -399,7 +400,10 @@ sap.ui.define(
             let oEntry = {
               Zgptid: jsonModel.getProperty("/dialogEditCreateVariables/addFilePathDialogValues/gptTypeSelectedKey"),
               ZfolderPath: jsonModel.getProperty("/dialogEditCreateVariables/addFilePathDialogValues/folderPathValue"),
-              Mode: 'C'
+              Mode: this.editCreateFilePathMode
+            }
+            if (this.editCreateFilePathMode === 'U') {
+              oEntry.Kytno = this.selectedEditCreateRowData.Kytno
             }
             that
               .getOwnerComponent()
@@ -407,7 +411,7 @@ sap.ui.define(
               .create(sPath, oEntry, {
                 success: function (oData, oResponse) {
                   if (oResponse.statusText === "Created") {
-                    MessageBox.success(i18n.getProperty("successfullyCreated"), {
+                    MessageBox.success(i18n.getProperty("successful"), {
                       onClose: function (sAction) {
                         that._fetchFilePaths();
                         that._clearAddFilePathDialogValues();
@@ -560,8 +564,12 @@ sap.ui.define(
               });
           });
         },
-        _deleteSelectedRow: function (oEvent) {
-
+        _editCreateFilePathEditSelectedRow: function (oEvent) {
+          let jsonModel = this.getModel("jsonModel");
+          this.editCreateFilePathMode = "U";
+          jsonModel.setProperty("/dialogEditCreateVariables/addFilePathDialogValues/gptTypeSelectedKey", this.selectedEditCreateRowData.Zgptid)
+          jsonModel.setProperty("/dialogEditCreateVariables/addFilePathDialogValues/folderPathValue", this.selectedEditCreateRowData.ZfolderPath)
+          this._openDialogOnADialog('dialogEditCreateFilePath','addFilePath');
         },
         _unselectAll: function (oEvent) {
           let oTable = oEvent.getSource().getParent().getParent();
