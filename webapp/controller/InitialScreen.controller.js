@@ -113,6 +113,7 @@ sap.ui.define(
               this._oDialog2.close();
               this._oDialog2.destroy();
               this._oDialog2 = undefined;
+              this._clearAddFilePathDialogValues();
               return;
             }
 
@@ -415,6 +416,35 @@ sap.ui.define(
                     });
                   } else {
                     MessageBox.error(i18n.getProperty("creationFailed"));
+                  }
+                  resolve();
+                },
+                error: function (oResponse) {
+                  console.log(oResponse);
+                  reject(oResponse); // Reject the promise
+                },
+              });
+          });
+        },
+        _deleteSelectedFilePath: function () {
+          let that = this;
+          return new Promise((resolve, reject) => {
+            var sPath = "/modelFolderListSet",
+              i18n = this.getOwnerComponent().getModel("i18n"),
+              jsonModel = that.getModel("jsonModel");
+            that
+              .getOwnerComponent()
+              .getModel()
+              .remove(that.sEditCreateTableDeletePath, {
+                success: function (oData, oResponse) {
+                  if (oResponse.statusCode === "204") {
+                    MessageBox.success(i18n.getProperty("successfullyDeleted"), {
+                      onClose: function (sAction) {
+                        that._fetchFilePaths();
+                      },
+                    });
+                  } else {
+                    MessageBox.error(i18n.getProperty("failedToDelete"));
                   }
                   resolve();
                 },

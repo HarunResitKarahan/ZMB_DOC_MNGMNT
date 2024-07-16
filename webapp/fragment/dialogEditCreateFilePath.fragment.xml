@@ -41,7 +41,7 @@
 							tooltip="{i18n>delete}"
 							type="Ghost"
 							enabled="{jsonModel>/dialogEditCreateVariables/deleteButtonEnabled}"
-							press="_deleteSelectedRow"
+							press="_deleteSelectedFilePath"
 						/>
 						<SearchField
 							placeholder="{i18n>search---}"
