@@ -49,6 +49,7 @@
                                                 maxLength: 300
                                             }
                                         }"
+                                        change="_validateSingleInput"
                                         selectedItem="{jsonModel>/dialogEditCreateVariables/addFilePathDialogValues/gptTypeSelectedItem}"
                                     >
                                         <c:Item
@@ -70,7 +71,8 @@
                                                 maxLength: 300
                                             }
                                         }"
-                                        change="onFolderPathChange"
+                                        valueState="{jsonModel>/dialogEditCreateVariables/addFilePathDialogValues/folderPathValueState}"
+                                        change="onEditCreateFilePathAddFileFolderPathChange"
                                     />
                                 </f:fields>
                             </f:FormElement>
@@ -84,6 +86,7 @@
                 icon="sap-icon://save"
                 text="{i18n>save}"
                 type="Accept"
+                enabled="{= ${jsonModel>/dialogEditCreateVariables/addFilePathDialogValues/folderPathValueState} === 'None' &amp;&amp; ${jsonModel>/dialogEditCreateVariables/addFilePathDialogValues/folderPathValue} !== undefined}"
                 press="onAddFilePathSavePress"
             />
         </beginButton>

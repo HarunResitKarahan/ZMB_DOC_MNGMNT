@@ -15,6 +15,7 @@ sap.ui.define(
     "sap/m/Column",
     "sap/m/Text",
     "sap/m/Token",
+    "sap/m/MessageBox",
   ],
   function (
     BaseController,
@@ -31,7 +32,8 @@ sap.ui.define(
     SearchField,
     MColumn,
     Text,
-    Token
+    Token,
+    MessageBox
   ) {
     "use strict";
 
@@ -362,7 +364,7 @@ sap.ui.define(
             .setValueState("None");
           return new Token({ key: text, text: text });
         },
-        onFolderPathChange: function (oEvent) {
+        onEditCreateFilePathAddFileFolderPathChange: function (oEvent) {
           let oSource = oEvent.getSource(),
             oText = oSource.getValue(),
             i18n = this.getOwnerComponent().getModel("i18n");
@@ -377,14 +379,56 @@ sap.ui.define(
         onAddFilePathSavePress: function (oEvent) {
           let [allComboBoxSources, allInputSources] = this._getDialogEditCreateAddFilePathFormElements();
           let aInputs = [...allComboBoxSources, ...allInputSources],
-            bValidationError = false;
+            bValidationError = false,
+            that = this;
 
           aInputs.forEach(function (oInput) {
             bValidationError = that._validateInput(oInput) || bValidationError;
           }, this);
-          if(bValidationError) {
+          if (!bValidationError) {
+            this._createNewFilePath();
           }
-          return bValidationError;
+        },
+        _createNewFilePath: function () {
+          let that = this;
+          return new Promise((resolve, reject) => {
+            var sPath = "/modelFolderListSet",
+              i18n = this.getOwnerComponent().getModel("i18n"),
+              jsonModel = that.getModel("jsonModel");
+            let oEntry = {
+              Zgptid: jsonModel.getProperty("/dialogEditCreateVariables/addFilePathDialogValues/gptTypeSelectedKey"),
+              ZfolderPath: jsonModel.getProperty("/dialogEditCreateVariables/addFilePathDialogValues/folderPathValue"),
+              Mode: 'C'
+            }
+            that
+              .getOwnerComponent()
+              .getModel()
+              .create(sPath, oEntry, {
+                success: function (oData, oResponse) {
+                  if (oResponse.statusText === "Created") {
+                    MessageBox.success(i18n.getProperty("successfullyCreated"), {
+                      onClose: function (sAction) {
+                        that._fetchFilePaths();
+                        that._closeDialog();
+                      },
+                    });
+                  } else {
+                    MessageBox.error(i18n.getProperty("creationFailed"));
+                  }
+                  resolve();
+                },
+                error: function (oResponse) {
+                  console.log(oResponse);
+                  reject(oResponse); // Reject the promise
+                },
+              });
+          });
+        },
+        _validateSingleInput: function (oEvent) {
+          let oSource = oEvent.getSource(),
+            bValidationError = false;
+
+          bValidationError = this._validateInput(oSource) || bValidationError;
         },
         _getDialogEditCreateAddFilePathFormElements: function () {
           let returnArry = [],

@@ -45,7 +45,8 @@ sap.ui.define([
                     addFilePathDialogValues: {
                         gptTypeSelectedKey: undefined,
                         gptTypeSelectedItem: undefined,
-                        folderPathValue: undefined
+                        folderPathValue: undefined,
+                        folderPathValueState: "None"
                     }
                 }
             },
