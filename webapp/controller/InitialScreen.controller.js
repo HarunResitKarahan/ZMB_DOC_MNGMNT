@@ -115,6 +115,7 @@ sap.ui.define(
               this._oDialog2.destroy();
               this._oDialog2 = undefined;
               this._clearAddFilePathDialogValues();
+              this.lastSelectedItemsTable.clearSelection();
               return;
             }
 
@@ -125,6 +126,7 @@ sap.ui.define(
             this._oDialog.close();
             this._oDialog.destroy();
             this._oDialog = undefined;
+            this._clearAddFilePathDialogValues();
           } catch (error) {
             console.log(error)
           }
@@ -592,6 +594,7 @@ sap.ui.define(
           let oSource = oEvent.getSource(),
             jsonModel = this.getModel("jsonModel"),
             oItemIndex = oSource.getSelectedIndex();
+          this.lastSelectedItemsTable = oSource;
           if (oItemIndex === -1) {
             this.selectedEditCreateRowData = undefined;
             this.sEditCreateTableDeletePath = undefined;
