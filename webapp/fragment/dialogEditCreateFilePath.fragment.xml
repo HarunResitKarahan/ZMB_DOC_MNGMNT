@@ -41,7 +41,7 @@
 							tooltip="{i18n>delete}"
 							type="Ghost"
 							enabled="{jsonModel>/dialogEditCreateVariables/deleteButtonEnabled}"
-							press="_deleteSelectedFilePath"
+							press="onEditCreateFilePathDeleteFilePath"
 						/>
 						<SearchField
 							placeholder="{i18n>search---}"

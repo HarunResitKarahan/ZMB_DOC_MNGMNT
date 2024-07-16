@@ -430,6 +430,19 @@ sap.ui.define(
               });
           });
         },
+        onEditCreateFilePathDeleteFilePath: function () {
+          let i18n = this.getOwnerComponent().getModel("i18n"),
+            that = this;
+          MessageBox.warning(`${this.selectedEditCreateRowData.Kytno} ${i18n.getProperty("deleteConfirmationSuffix")}`, {
+            actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL],
+            emphasizedAction: MessageBox.Action.OK,
+            onClose: function (sAction) {
+                if (sAction === "OK") {
+                  that._deleteSelectedFilePath();
+                }
+            }
+        });   
+        },
         _deleteSelectedFilePath: function () {
           let that = this;
           return new Promise((resolve, reject) => {
