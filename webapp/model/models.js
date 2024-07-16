@@ -43,6 +43,7 @@ sap.ui.define([
                     editButtonEnabled: false,
                     unselectButtonEnabled: false,
                     addFilePathDialogValues: {
+                        mode: 'C',
                         gptTypeSelectedKey: undefined,
                         gptTypeSelectedItem: undefined,
                         folderPathValue: undefined,

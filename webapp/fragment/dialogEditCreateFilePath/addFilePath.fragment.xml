@@ -5,7 +5,7 @@
 >
     <Dialog
         draggable="true"
-        title="{i18n>addFilePath}"
+        title="{= ${jsonModel>/dialogEditCreateVariables/addFilePathDialogValues/mode} === 'C' ? ${i18n>addFilePath} : ${i18n>editFilePath}}"
         escapeHandler="._closeDialog"
         class="sapUiContentPadding"
     >

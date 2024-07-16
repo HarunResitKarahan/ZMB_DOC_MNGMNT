@@ -54,7 +54,8 @@ sap.ui.define(
           );
           this.selectedEditCreateRowData = undefined;
           this.sEditCreateTableDeletePath = undefined;
-          this.editCreateFilePathMode = "C"
+          this.editCreateFilePathMode = "C";
+          this.lastSelectedItemsTable = undefined;
           //oFilePathMultiInput.addValidator(this._filePathValidator.bind(this));
         },
 
@@ -115,7 +116,13 @@ sap.ui.define(
               this._oDialog2.destroy();
               this._oDialog2 = undefined;
               this._clearAddFilePathDialogValues();
-              this.lastSelectedItemsTable.clearSelection();
+              try {
+                if (this.lastSelectedItemsTable !== undefined) {
+                  this.lastSelectedItemsTable.clearSelection();
+                }
+              } catch (error) {
+                
+              }
               return;
             }
 
@@ -439,11 +446,11 @@ sap.ui.define(
             actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL],
             emphasizedAction: MessageBox.Action.OK,
             onClose: function (sAction) {
-                if (sAction === "OK") {
-                  that._deleteSelectedFilePath();
-                }
+              if (sAction === "OK") {
+                that._deleteSelectedFilePath();
+              }
             }
-        });   
+          });
         },
         _deleteSelectedFilePath: function () {
           let that = this;
@@ -475,7 +482,7 @@ sap.ui.define(
           });
         },
         _clearAddFilePathDialogValues: function () {
-         this.getModel("jsonModel").setProperty("/dialogEditCreateVariables", models._dialogEditCreateVariables())
+          this.getModel("jsonModel").setProperty("/dialogEditCreateVariables", models._dialogEditCreateVariables())
         },
         _validateSingleInput: function (oEvent) {
           let oSource = oEvent.getSource(),
@@ -582,9 +589,10 @@ sap.ui.define(
         _editCreateFilePathEditSelectedRow: function (oEvent) {
           let jsonModel = this.getModel("jsonModel");
           this.editCreateFilePathMode = "U";
+          jsonModel.setProperty("/dialogEditCreateVariables/addFilePathDialogValues/mode", "U")
           jsonModel.setProperty("/dialogEditCreateVariables/addFilePathDialogValues/gptTypeSelectedKey", this.selectedEditCreateRowData.Zgptid)
           jsonModel.setProperty("/dialogEditCreateVariables/addFilePathDialogValues/folderPathValue", this.selectedEditCreateRowData.ZfolderPath)
-          this._openDialogOnADialog('dialogEditCreateFilePath','addFilePath');
+          this._openDialogOnADialog('dialogEditCreateFilePath', 'addFilePath');
         },
         _unselectAll: function (oEvent) {
           let oTable = oEvent.getSource().getParent().getParent();
