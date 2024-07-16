@@ -409,6 +409,7 @@ sap.ui.define(
                     MessageBox.success(i18n.getProperty("successfullyCreated"), {
                       onClose: function (sAction) {
                         that._fetchFilePaths();
+                        that._clearAddFilePathDialogValues();
                         that._closeDialog();
                       },
                     });
@@ -423,6 +424,9 @@ sap.ui.define(
                 },
               });
           });
+        },
+        _clearAddFilePathDialogValues: function () {
+         this.getModel("jsonModel").setProperty("/dialogEditCreateVariables", models._dialogEditCreateVariables())
         },
         _validateSingleInput: function (oEvent) {
           let oSource = oEvent.getSource(),
