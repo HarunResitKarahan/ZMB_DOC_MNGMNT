@@ -132,6 +132,7 @@
             <table:TreeTable
                 id="idDocumentTreeTable"
                 selectionMode="MultiToggle"
+                selectionBehavior="Row"
                 rows="{jsonModel>/documentListSet}"
                 busy="{jsonModel>/documentTreeTableBusy}"
                 alternateRowColors="true"
