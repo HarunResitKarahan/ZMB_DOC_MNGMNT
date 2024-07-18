@@ -133,14 +133,14 @@
                 id="idDocumentTreeTable"
                 selectionMode="MultiToggle"
                 selectionBehavior="Row"
-                rows="{jsonModel>/documentListSet}"
+                rows="{jsonModel>/filesSet}"
                 busy="{jsonModel>/documentTreeTableBusy}"
                 alternateRowColors="true"
                 visibleRowCountMode="Auto"
             >
                 <table:extension>
                     <OverflowToolbar style="Clear">
-                        <Title text="{i18n>files} ({= ${jsonModel>/documentListSet}.length})" />
+                        <Title text="{i18n>files} ({jsonModel>/filesSetCount})" />
                         <ToolbarSpacer />
                         <!-- <Button
                             icon="sap-icon://clear-all"
@@ -152,6 +152,7 @@
                             placeholder="{i18n>search---}"
                             width="15rem"
                             liveChange="onTreeTableBasicSearch"
+                            search="onTreeTableBasicSearch"
                         />
                         <Button
                             icon="sap-icon://add"
@@ -250,6 +251,7 @@
                                     path: 'jsonModel>status',
                                     formatter: '.formatter.setStatusState'
                                 }"
+                                visible="{= ${jsonModel>iconSrc} !== 'sap-icon://open-folder'}"
                             />
                         </table:template>
                     </table:Column>
@@ -273,6 +275,8 @@
                             <Button
                                 icon="sap-icon://download"
                                 type="Ghost"
+                                press="onDownloadFileButtonPress"
+                                visible="{= ${jsonModel>iconSrc} !== 'sap-icon://open-folder'}"
                             />
                         </table:template>
                     </table:Column>
@@ -287,7 +291,7 @@
                     </OverflowToolbar>
                 </table:footer> -->
                 <table:noData>
-                    <IllustratedMessage />
+                    <IllustratedMessage illustrationSize="Spot"/>
                 </table:noData>
             </table:TreeTable>
         </f:content>

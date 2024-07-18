@@ -31,7 +31,8 @@ sap.ui.define([
                     filterInputValues: this._filterInputValues(),
                     filterInputConfigurations: this._filterInputConfigurations(),
                     dialogEditCreateVariables: this._dialogEditCreateVariables(),
-                    documentListSet: [],
+                    filesSetCount: undefined,
+                    filesSet: [],
                     modelFolderListSet: [],
                     modelListSet: []
                 });
@@ -120,7 +121,7 @@ sap.ui.define([
                     },
                 ]
             },
-            _documentsListSet: function () {
+            _filesSet: function () {
                 return [
                     {
                         key: "1",

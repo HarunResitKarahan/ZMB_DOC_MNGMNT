@@ -60,18 +60,27 @@ sap.ui.define(
         },
 
         _onRouteMatched: function () {
-          let oModel = this.getOwnerComponent().getModel(),
-            sPath = "/getPersonalInfoSet(Pernr='')";
+          this._getPersonelInfos().then(() => {
+            this._fetchFiles();
+          })
+        },
+        _getPersonelInfos: function () {
+          let that = this;
+          return new Promise((resolve, reject) => {
+            let oModel = this.getOwnerComponent().getModel(),
+              sPath = "/getPersonalInfoSet(Pernr='')";
 
-          oModel.read(sPath, {
-            success: (oData, oResponse) => {
-              console.log(oData);
-            },
-            error: (oError) => {
-              console.log(oError);
-            },
-          });
-          this._fetchFiles();
+            oModel.read(sPath, {
+              success: (oData, oResponse) => {
+                console.log(oData);
+                resolve();
+              },
+              error: (oError) => {
+                console.log(oError);
+                reject();
+              },
+            });
+          })
         },
         _openDialog: function (dialogName) {
           if (!this._oDialog) {
@@ -109,6 +118,7 @@ sap.ui.define(
             );
           }
         },
+
         _closeDialog: function () {
           try {
             if (this._oDialog2) {
@@ -121,7 +131,7 @@ sap.ui.define(
                   this.lastSelectedItemsTable.clearSelection();
                 }
               } catch (error) {
-                
+
               }
               return;
             }
@@ -346,13 +356,13 @@ sap.ui.define(
             oFilter = new Filter(
               [
                 new Filter("fileName", FilterOperator.Contains, inputValue),
-                new Filter("uploadedBy", FilterOperator.Contains, inputValue),
               ],
               false
             );
             oBinding.filter([oFilter]);
           } else {
             oBinding.filter([oFilter]);
+            table.expandToLevel(0);
           }
         },
         _filePathValidator: function (args) {
@@ -533,13 +543,74 @@ sap.ui.define(
           }
         },
         _fetchFiles: function () {
-          let jsonModel = this.getModel("jsonModel");
-          jsonModel.setProperty(
-            "/filterInputConfigurations/secondFilterBarVisibility",
-            true
-          );
-          jsonModel.setProperty("/documentListSet", models._documentsListSet());
-          this.getView().byId("idDocumentTreeTable").setBusy(false);
+          let that = this;
+          return new Promise((resolve, reject) => {
+            var sPath = "/filesSet",
+              jsonModel = that.getModel("jsonModel");
+            that
+              .getOwnerComponent()
+              .getModel()
+              .read(sPath, {
+                success: function (oData, oResponse) {
+                  jsonModel.setProperty("/filterInputConfigurations/secondFilterBarVisibility", true);
+                  jsonModel.setProperty("/filesSet", that._createFolderStructure(oData.results));
+                  jsonModel.setProperty("/filesSetCount", oData.results.length);
+                  that.getView().byId("idDocumentTreeTable").setBusy(false);
+                  resolve();
+                },
+                error: function (oResponse) {
+                  console.log(oResponse);
+                  reject(oResponse); // Reject the promise
+                },
+              });
+          });
+        },
+        _createFolder: function (path) {
+          if (!this.fileMap[path]) {
+            const parts = path.split('\\');
+            const fileName = parts.pop();
+            const parentPath = parts.join('\\');
+
+            this.fileMap[path] = {
+              key: path,
+              fileName: fileName,
+              iconSrc: 'sap-icon://open-folder',
+              nodes: [],
+              status: '01'
+            };
+
+            // Recursively create parent folders
+            if (parentPath) {
+              const parentFolder = this._createFolder(parentPath);
+              // parentFolder.nodes.push(this.fileMap[path]);
+              if (parentFolder) {
+                parentFolder.nodes.unshift(this.fileMap[path]);
+              }
+            }
+          }
+          return this.fileMap[path];
+        },
+        _createFolderStructure: function (files) {
+          this.fileMap = {};
+          files.forEach(file => {
+            const parentPath = file.FileParentFolderPath;
+            const parentFolder = this._createFolder(parentPath);
+
+            const fileNode = {
+              key: file.FileId,
+              fileName: file.FileName,
+              iconSrc: formatter.setFileIcon(file.FileType),
+              fileType: file.FileType,
+              uploadedBy: file.uploadedBy,
+              status: file.FileIsSync === true ? '02' : '03'
+            };
+
+            parentFolder.nodes.push(fileNode);
+          });
+
+          // Return the top-level folders
+          const topFolders = Object.values(this.fileMap).filter(folder => !folder.key.includes('\\'));
+          return topFolders;
         },
         onEditCreateFilePathPress: function (oEvent) {
           this._fetchFilePaths().then(() => {
@@ -620,6 +691,25 @@ sap.ui.define(
             jsonModel.setProperty("/dialogEditCreateVariables/unselectButtonEnabled", true);
           }
 
+        },
+        onDownloadFileButtonPress: function (oEvent) {
+          let dataPath = oEvent.getSource().getParent().getBindingContext("jsonModel"),
+            oView = this.getView(),
+            oModel = this.getModel(),
+            oButton = oEvent.getSource(),
+            rowData = dataPath.getObject(),
+            sPath = `/getFileSet(FileId='${rowData.key}')/$value`,
+            that = this;
+
+          oModel.read(sPath, {
+            success: (oData, oResponse) => {
+              var file = oResponse.requestUri;
+              window.open(file);
+            },
+            error: (oError) => {
+              console.error(oError);
+            },
+          });
         }
       }
     );

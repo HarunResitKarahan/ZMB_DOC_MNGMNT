@@ -2,6 +2,22 @@ sap.ui.define([], function () {
   "use strict";
 
   return {
+    setFileIcon: function (sValue) {
+      switch (sValue) {
+        case '.xls' || '.xlsx' || '.csv': 
+            return 'sap-icon://excel-attachment';
+        case '.pdf':
+            return 'sap-icon://pdf-attachment';
+        case '.doc' || ".docx":
+            return 'sap-icon://doc-attachment';
+        case '.ppt' || '.pptx':
+            return 'sap-icon://ppt-attachment';
+        case '.txt':
+            return 'sap-icon://attachment-text-file';
+        default:
+            return 'sap-icon://document';
+    }
+    },
     setStatusText: function (sValue) {
       let i18n = this.getOwnerComponent().getModel("i18n");
       switch (sValue) {
