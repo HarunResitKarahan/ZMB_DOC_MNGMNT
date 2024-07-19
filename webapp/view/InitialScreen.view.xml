@@ -299,17 +299,12 @@
                 </table:noData>
             </table:TreeTable>
         </f:content>
-        <f:footer>
+        <!-- <f:footer>
             <OverflowToolbar
                 design="Info"
                 enabled="false"
             >
                 <ToolbarSpacer />
-                <!-- <Button
-                    text="{i18n>path-list-add}"
-                    type="Emphasized"
-                    icon="sap-icon://request"
-                /> -->
                 <ToolbarSpacer />
                 <Button
                     text="{i18n>save}"
@@ -317,6 +312,6 @@
                     type="Accept"
                 />
             </OverflowToolbar>
-        </f:footer>
+        </f:footer> -->
     </f:DynamicPage>
 </mvc:View>
