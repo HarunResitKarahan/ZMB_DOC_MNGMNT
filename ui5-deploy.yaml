@@ -1,0 +1,25 @@
+# yaml-language-server: $schema=https://sap.github.io/ui5-tooling/schema/ui5.yaml.json
+
+specVersion: "3.1"
+metadata:
+  name: com.martur.zmbdocumentmanagment
+type: application
+builder:
+  resources:
+    excludes:
+      - /test/**
+      - /localService/**
+  customTasks:
+    - name: deploy-to-abap
+      afterTask: generateCachebusterInfo
+      configuration:
+        target:
+          url: https://vhuhauedci.sap.marturfompak.com:44300
+          client: "500"
+        app:
+          name: ZMB_DOC_MNGMNT
+          description: AI Döküman Yönetim Ekranı
+          package: ZUBFIORI
+          transport: UEDK976840
+        exclude:
+          - /test/

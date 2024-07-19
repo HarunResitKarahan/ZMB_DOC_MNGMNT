@@ -16,6 +16,7 @@ sap.ui.define(
     "sap/m/Text",
     "sap/m/Token",
     "sap/m/MessageBox",
+    "sap/m/MessageToast",
   ],
   function (
     BaseController,
@@ -33,7 +34,8 @@ sap.ui.define(
     MColumn,
     Text,
     Token,
-    MessageBox
+    MessageBox,
+    MessageToast
   ) {
     "use strict";
 
@@ -544,6 +546,7 @@ sap.ui.define(
         },
         _fetchFiles: function () {
           let that = this;
+          this.getView().byId("idDocumentTreeTable").setBusy(true);
           return new Promise((resolve, reject) => {
             var sPath = "/filesSet",
               jsonModel = that.getModel("jsonModel");
@@ -551,6 +554,11 @@ sap.ui.define(
               .getOwnerComponent()
               .getModel()
               .read(sPath, {
+                // filters: [
+                //   new Filter("FileId", FilterOperator.EQ, IPernr), 
+                //   new Filter("FileName", FilterOperator.EQ, IPernr), 
+                //   new Filter("FileType", FilterOperator.EQ, IWerks)
+                // ],
                 success: function (oData, oResponse) {
                   jsonModel.setProperty("/filterInputConfigurations/secondFilterBarVisibility", true);
                   jsonModel.setProperty("/filesSet", that._createFolderStructure(oData.results));
@@ -602,7 +610,8 @@ sap.ui.define(
               iconSrc: formatter.setFileIcon(file.FileType),
               fileType: file.FileType,
               uploadedBy: file.uploadedBy,
-              status: file.FileIsSync === true ? '02' : '03'
+              status: file.FileIsSync === true ? '02' : '03',
+              isEjected: file.FileIsEjected
             };
 
             parentFolder.nodes.push(fileNode);
@@ -657,6 +666,30 @@ sap.ui.define(
               });
           });
         },
+        onExcludeCheckBoxSelect: function (oEvent) {
+          let oSource = oEvent.getSource(),
+            oSelected = oSource.getSelected(),
+            oModel = this.getModel(),
+            i18n = this.getOwnerComponent().getModel("i18n"),
+            sPath = '/setIsEjectedSet',
+            dataPath = oEvent.getSource().getParent().getBindingContext("jsonModel"),
+            rowData = dataPath.getObject(),
+            oEntry = {
+              FileId: rowData.key,
+              IsEjected: oSelected
+            },
+            that = this;
+
+          oModel.create(sPath, oEntry, {
+            success: function (oData, oResponse) {
+              MessageToast.show(i18n.getProperty("fileEjectedSetStatusSuccess"), { duration: 1000 })
+            },
+            error: function (oResponse) {
+              console.log(oResponse);
+              MessageToast.show(i18n.getProperty("fileEjectedSetStatusFail"), { duration: 1000 })
+            },
+          });
+        },
         _editCreateFilePathEditSelectedRow: function (oEvent) {
           let jsonModel = this.getModel("jsonModel");
           this.editCreateFilePathMode = "U";
@@ -696,20 +729,13 @@ sap.ui.define(
           let dataPath = oEvent.getSource().getParent().getBindingContext("jsonModel"),
             oView = this.getView(),
             oModel = this.getModel(),
+            oServicePath = oModel.sServiceUrl,
             oButton = oEvent.getSource(),
             rowData = dataPath.getObject(),
             sPath = `/getFileSet(FileId='${rowData.key}')/$value`,
             that = this;
 
-          oModel.read(sPath, {
-            success: (oData, oResponse) => {
-              var file = oResponse.requestUri;
-              window.open(file);
-            },
-            error: (oError) => {
-              console.error(oError);
-            },
-          });
+          sap.m.URLHelper.redirect(oServicePath + sPath, false)
         }
       }
     );

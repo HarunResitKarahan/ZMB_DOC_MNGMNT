@@ -131,7 +131,7 @@
         <f:content>
             <table:TreeTable
                 id="idDocumentTreeTable"
-                selectionMode="MultiToggle"
+                selectionMode="None"
                 selectionBehavior="Row"
                 rows="{jsonModel>/filesSet}"
                 busy="{jsonModel>/documentTreeTableBusy}"
@@ -262,7 +262,7 @@
                     >
                         <Label text="{i18n>exclude}" />
                         <table:template>
-                            <CheckBox enabled="{= ${jsonModel>status} === '02'}" />
+                            <CheckBox selected="{jsonModel>isEjected}" visible="{= ${jsonModel>status} === '02'}" select="onExcludeCheckBoxSelect"/>
                         </table:template>
                     </table:Column>
                     <table:Column
