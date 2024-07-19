@@ -137,6 +137,7 @@
                 id="idDocumentTreeTable"
                 selectionMode="None"
                 selectionBehavior="Row"
+                collapseRecursive ="false"
                 rows="{jsonModel>/filesSet}"
                 busy="{jsonModel>/documentTreeTableBusy}"
                 alternateRowColors="true"
