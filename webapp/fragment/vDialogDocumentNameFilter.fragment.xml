@@ -14,7 +14,7 @@
         stretch="true"
         escapeHandler="._closeDialog"
         key="key"
-        descriptionKey="fileName"
+        descriptionKey="FileName"
     >
         <filterBar>
             <fb:FilterBar
