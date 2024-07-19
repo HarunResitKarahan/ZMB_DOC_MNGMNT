@@ -33,6 +33,7 @@ sap.ui.define([
                     dialogEditCreateVariables: this._dialogEditCreateVariables(),
                     filesSetCount: undefined,
                     filesSet: [],
+                    filesSetForDocumentNameFilter: [],
                     modelFolderListSet: [],
                     modelListSet: []
                 });
@@ -54,7 +55,9 @@ sap.ui.define([
             },
             _filterInputValues: function () {
                 return {
-                    documentName: ""
+                    documentName: "",
+                    documentType: "",
+                    documentExtension: ""
                 }
             },
             _filterInputConfigurations: function () {
@@ -64,18 +67,18 @@ sap.ui.define([
             },
             _filterInputDocumentStatusSearchHelpData: function () {
                 return [
+                    // {
+                    //     key: "1",
+                    //     value: "Sisteme Taşınıyor",
+                    //     iconSrc: 'sap-icon://in-progress'
+                    // },
                     {
-                        key: "1",
-                        value: "Sisteme Taşınıyor",
-                        iconSrc: 'sap-icon://in-progress'
-                    },
-                    {
-                        key: "2",
+                        key: "true",
                         value: "Sistemde Mevcut",
                         iconSrc: "sap-icon://message-success"
                     },
                     {
-                        key: "3",
+                        key: "false",
                         value: "Sisteme Taşınmadı",
                         iconSrc: 'sap-icon://message-error'
                     },

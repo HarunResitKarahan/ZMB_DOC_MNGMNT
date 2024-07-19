@@ -163,7 +163,7 @@ sap.ui.define(
         _openInputTableValueHelp: function (dialogName) {
           let that = this;
           this._oBasicSearchField = new SearchField();
-          var aRows = this.getModel("jsonModel").getData().documentListSet;
+          var aRows = this.getModel("jsonModel").getData().filesSetForDocumentNameFilter;
           if (!this._oDialog) {
             Fragment.load({
               name: `com.martur.zmbdocumentmanagment.fragment.${dialogName}`,
@@ -177,7 +177,8 @@ sap.ui.define(
                 );
                 var oFilterBar = oDialog.getFilterBar(),
                   oColumnDocumentCode,
-                  oColumnDocumentName;
+                  oColumnDocumentName,
+                  oColumnDocumentFolderPath;
                 that._oVHD = oDialog;
 
                 this.getView().addDependent(oDialog);
@@ -193,13 +194,14 @@ sap.ui.define(
 
                 oDialog.getTableAsync().then(
                   function (oTable) {
+                    let i18n = this.getOwnerComponent().getModel("i18n")
                     oTable.setModel(this.getModel("jsonModel"));
 
                     // For Desktop and tabled the default table is sap.ui.table.Table
                     if (oTable.bindRows) {
                       // Bind rows to the ODataModel and add columns
                       oTable.bindAggregation("rows", {
-                        path: "/documentListSet",
+                        path: "/filesSetForDocumentNameFilter",
                         events: {
                           dataReceived: function () {
                             oDialog.update();
@@ -207,33 +209,41 @@ sap.ui.define(
                         },
                       });
                       oColumnDocumentCode = new UIColumn({
-                        width: "8rem",
-                        label: new Label({ text: "Döküman No" }),
+                        width: "auto",
+                        label: new Label({ text: i18n.getProperty("documentNo") }),
                         template: new Text({
                           wrapping: false,
-                          text: `{key}`,
+                          text: `{FileId}`,
                         }),
                       });
                       oColumnDocumentName = new UIColumn({
-                        label: new Label({ text: "Döküman Ad" }),
+                        label: new Label({ text: i18n.getProperty("document-name") }),
                         template: new Text({
                           wrapping: false,
-                          text: `{fileName}`,
+                          text: `{FileName}`,
+                        }),
+                      });
+                      oColumnDocumentFolderPath = new UIColumn({
+                        label: new Label({ text: i18n.getProperty("folderPath") }),
+                        template: new Text({
+                          wrapping: false,
+                          text: `{FileParentFolderPath}`,
                         }),
                       });
                       oTable.addColumn(oColumnDocumentCode);
                       oTable.addColumn(oColumnDocumentName);
+                      oTable.addColumn(oColumnDocumentFolderPath);
                     }
 
                     // For Mobile the default table is sap.m.Table
                     if (oTable.bindItems) {
                       // Bind items to the ODataModel and add columns
                       oTable.bindAggregation("items", {
-                        path: "/documentListSet",
+                        path: "/filesSetForDocumentNameFilter",
                         template: new ColumnListItem({
                           cells: [
-                            new Label({ text: "{key}" }),
-                            new Label({ text: "{fileName}" }),
+                            new Label({ text: "{FileId}" }),
+                            new Label({ text: "{FileName}" }),
                           ],
                         }),
                         events: {
@@ -296,7 +306,7 @@ sap.ui.define(
               filters: [
                 // new Filter({ path: "key", operator: FilterOperator.Contains, value1: sSearchQuery }),
                 new Filter({
-                  path: "fileName",
+                  path: "FileName",
                   operator: FilterOperator.Contains,
                   value1: sSearchQuery,
                 }),
@@ -548,20 +558,34 @@ sap.ui.define(
           let that = this;
           this.getView().byId("idDocumentTreeTable").setBusy(true);
           return new Promise((resolve, reject) => {
-            var sPath = "/filesSet",
-              jsonModel = that.getModel("jsonModel");
-            that
-              .getOwnerComponent()
-              .getModel()
-              .read(sPath, {
-                // filters: [
-                //   new Filter("FileId", FilterOperator.EQ, IPernr), 
-                //   new Filter("FileName", FilterOperator.EQ, IPernr), 
-                //   new Filter("FileType", FilterOperator.EQ, IWerks)
-                // ],
+            var jsonModel = that.getModel("jsonModel"),
+              oModel = that.getOwnerComponent().getModel(),
+              FileName = jsonModel.getProperty("/filterInputValues/documentName"),
+              FileType = jsonModel.getProperty("/filterInputValues/documentType"),
+              FileIsSync = jsonModel.getProperty("/filterInputValues/documentExtension"),
+              sPath = "/filesSet";
+              // sPath = oModel.createKey("/filesSet", {
+              //   FileId: "",
+              //   FileName: FileName,
+              //   FileType: FileType,
+              //   FileIsSync: false,
+              // });
+              if (FileIsSync === "true") {
+                FileIsSync = 'X'
+              }
+              if (FileIsSync === "false") {
+                FileIsSync = 'Y'
+              }
+              oModel.read(sPath, {
+                filters: [
+                  new Filter("FileName", FilterOperator.EQ, FileName), 
+                  new Filter("FileType", FilterOperator.EQ, FileType),
+                  new Filter("FileIsSync", FilterOperator.EQ, FileIsSync)
+                ],
                 success: function (oData, oResponse) {
                   jsonModel.setProperty("/filterInputConfigurations/secondFilterBarVisibility", true);
                   jsonModel.setProperty("/filesSet", that._createFolderStructure(oData.results));
+                  jsonModel.setProperty("/filesSetForDocumentNameFilter", oData.results);
                   jsonModel.setProperty("/filesSetCount", oData.results.length);
                   that.getView().byId("idDocumentTreeTable").setBusy(false);
                   resolve();
@@ -610,7 +634,7 @@ sap.ui.define(
               iconSrc: formatter.setFileIcon(file.FileType),
               fileType: file.FileType,
               uploadedBy: file.uploadedBy,
-              status: file.FileIsSync === true ? '02' : '03',
+              status: file.FileIsSync === 'X' ? '02' : '03',
               isEjected: file.FileIsEjected
             };
 

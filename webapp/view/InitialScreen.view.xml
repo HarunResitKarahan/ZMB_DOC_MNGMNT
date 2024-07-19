@@ -54,6 +54,7 @@
                     <fb:FilterBar
                         useToolbar="false"
                         showFilterConfiguration="false"
+                        search="_fetchFiles"
                         visible="{jsonModel>/filterInputConfigurations/secondFilterBarVisibility}"
                     >
                         <fb:filterGroupItems>
@@ -84,11 +85,13 @@
                                         suggestionItems="{
                                             path: 'jsonModel>/documentTypeSearchHelpSet'
                                         }"
+                                        selectedKey="{jsonModel>/filterInputValues/documentType}"
                                         showValueHelp="false"
+                                        maxTokens="1"
                                         startSuggestion="0"
                                     >
                                         <core:Item
-                                            key="{jsonModel>key}"
+                                            key="{jsonModel>value}"
                                             text="{jsonModel>value}"
                                         />
                                     </MultiInput>
@@ -106,8 +109,9 @@
                                             path: 'jsonModel>/documentStatusSearchHelpSet'
                                         }"
                                         showValueHelp="false"
+                                        selectedKey="{jsonModel>/filterInputValues/documentExtension}"
                                         showSuggestion="true"
-                                        maxTokens="3"
+                                        maxTokens="1"
                                         startSuggestion="0"
                                     >
                                         <core:Item

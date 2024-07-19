@@ -31,12 +31,12 @@
                     >
                         <fb:control>
                             <m:Input
-                                suggestionItems="{jsonModel>/documentListSet}"
+                                suggestionItems="{jsonModel>/filesSetForDocumentNameFilter}"
                                 showSuggestion="true"
                                 startSuggestion="0"
                             >
                                 <m:suggestionItems>
-                                    <core:Item text="{jsonModel>fileName}" />
+                                    <core:Item text="{jsonModel>FileName}" />
                                 </m:suggestionItems>
                                 <!-- <m:suggestionRows>
                                     <m:ColumnListItem>
