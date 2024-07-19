@@ -589,7 +589,10 @@ sap.ui.define(
                   jsonModel.setProperty("/filesSetForDocumentNameFilter", oData.results);
                   jsonModel.setProperty("/filesSetCount", oData.results.length);
                   that.getView().byId("idDocumentTreeTable").expandToLevel(999);
-                  that.getView().byId("idDocumentTreeTable").getColumns()[0].autoResize();
+                  setTimeout(() => {
+                    that.getView().byId("idDocumentTreeTable").autoResizeColumn(0);
+                  }, 300);
+                  // that.getView().byId("idDocumentTreeTable").getColumns()[0].autoResize();
                   that.getView().byId("idDocumentTreeTable").setBusy(false);
                   resolve();
                 },
