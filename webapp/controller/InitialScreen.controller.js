@@ -78,8 +78,8 @@ sap.ui.define(
                 resolve();
               },
               error: (oError) => {
-                console.log(oError);
-                reject();
+                // console.log(oError);
+                reject(oError);
               },
             });
           })
@@ -456,7 +456,7 @@ sap.ui.define(
                   resolve();
                 },
                 error: function (oResponse) {
-                  console.log(oResponse);
+                  console.error(oResponse);
                   reject(oResponse); // Reject the promise
                 },
               });
@@ -498,7 +498,7 @@ sap.ui.define(
                   resolve();
                 },
                 error: function (oResponse) {
-                  console.log(oResponse);
+                  // console.log(oResponse);
                   reject(oResponse); // Reject the promise
                 },
               });
@@ -592,7 +592,7 @@ sap.ui.define(
                   resolve();
                 },
                 error: function (oResponse) {
-                  console.log(oResponse);
+                  // console.log(oResponse);
                   reject(oResponse); // Reject the promise
                 },
               });
@@ -665,7 +665,7 @@ sap.ui.define(
                   resolve();
                 },
                 error: function (oResponse) {
-                  console.log(oResponse);
+                  // console.log(oResponse);
                   reject(oResponse); // Reject the promise
                 },
               });
@@ -685,7 +685,7 @@ sap.ui.define(
                   resolve();
                 },
                 error: function (oResponse) {
-                  console.log(oResponse);
+                  // console.log(oResponse);
                   reject(oResponse); // Reject the promise
                 },
               });
@@ -710,7 +710,7 @@ sap.ui.define(
               MessageToast.show(i18n.getProperty("fileEjectedSetStatusSuccess"), { duration: 1000 })
             },
             error: function (oResponse) {
-              console.log(oResponse);
+              // console.log(oResponse);
               MessageToast.show(i18n.getProperty("fileEjectedSetStatusFail"), { duration: 1000 })
             },
           });
