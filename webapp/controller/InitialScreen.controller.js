@@ -372,9 +372,10 @@ sap.ui.define(
               false
             );
             oBinding.filter([oFilter]);
+            table.expandToLevel(999);
           } else {
             oBinding.filter([oFilter]);
-            table.expandToLevel(0);
+            table.collapseAll();
           }
         },
         _filePathValidator: function (args) {
