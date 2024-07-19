@@ -142,17 +142,17 @@ sap.ui.define(
             console.log(error)
           }
           try {
+            this._oDialog = undefined;
             this._oDialog.close();
             this._oDialog.destroy();
-            this._oDialog = undefined;
             this._clearAddFilePathDialogValues();
           } catch (error) {
             console.log(error)
           }
           try {
-            this._oVHD.close();
-            this._oVHD.destroy();
             this._oVHD = undefined;
+            this._oVHD.close();
+            this._oVHD.destroy(); 
           } catch (error) {
             console.log(error)
           }

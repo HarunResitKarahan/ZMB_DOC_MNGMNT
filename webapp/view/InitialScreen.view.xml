@@ -263,6 +263,7 @@
                     <table:Column
                         width="5rem"
                         autoResizable="true"
+                        sortProperty="isEjected"
                         hAlign="Center"
                     >
                         <Label text="{i18n>exclude}" />
