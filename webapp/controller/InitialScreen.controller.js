@@ -141,20 +141,43 @@ sap.ui.define(
           } catch (error) {
             console.log(error)
           }
+          
+          
+          
+          try {
+            this._oDialog.close();
+            
+          } catch (error) {
+          }
+          try {
+            this._clearAddFilePathDialogValues();
+            
+          } catch (error) {
+          }
+          try {
+            this._oDialog.destroy();
+            
+          } catch (error) {
+          }
           try {
             this._oDialog = undefined;
-            this._oDialog.close();
-            this._oDialog.destroy();
-            this._clearAddFilePathDialogValues();
+
           } catch (error) {
-            console.log(error)
+          }
+          try {
+            this._oVHD.close();
+          }
+          catch (error) {
+          }
+          try {
+            this._oVHD.destroy();
+          }
+          catch (error) {
           }
           try {
             this._oVHD = undefined;
-            this._oVHD.close();
-            this._oVHD.destroy(); 
-          } catch (error) {
-            console.log(error)
+          }
+          catch (error) {
           }
         },
         _documentSortConfirm: function (oEvent) {
@@ -565,42 +588,42 @@ sap.ui.define(
               FileType = jsonModel.getProperty("/filterInputValues/documentType"),
               FileIsSync = jsonModel.getProperty("/filterInputValues/documentExtension"),
               sPath = "/filesSet";
-              // sPath = oModel.createKey("/filesSet", {
-              //   FileId: "",
-              //   FileName: FileName,
-              //   FileType: FileType,
-              //   FileIsSync: false,
-              // });
-              if (FileIsSync === "true") {
-                FileIsSync = 'X'
-              }
-              if (FileIsSync === "false") {
-                FileIsSync = 'Y'
-              }
-              oModel.read(sPath, {
-                filters: [
-                  new Filter("FileName", FilterOperator.EQ, FileName), 
-                  new Filter("FileType", FilterOperator.EQ, FileType),
-                  new Filter("FileIsSync", FilterOperator.EQ, FileIsSync)
-                ],
-                success: function (oData, oResponse) {
-                  jsonModel.setProperty("/filterInputConfigurations/secondFilterBarVisibility", true);
-                  jsonModel.setProperty("/filesSet", that._createFolderStructure(oData.results));
-                  jsonModel.setProperty("/filesSetForDocumentNameFilter", oData.results);
-                  jsonModel.setProperty("/filesSetCount", oData.results.length);
-                  that.getView().byId("idDocumentTreeTable").expandToLevel(999);
-                  setTimeout(() => {
-                    that.getView().byId("idDocumentTreeTable").autoResizeColumn(0);
-                  }, 300);
-                  // that.getView().byId("idDocumentTreeTable").getColumns()[0].autoResize();
-                  that.getView().byId("idDocumentTreeTable").setBusy(false);
-                  resolve();
-                },
-                error: function (oResponse) {
-                  // console.log(oResponse);
-                  reject(oResponse); // Reject the promise
-                },
-              });
+            // sPath = oModel.createKey("/filesSet", {
+            //   FileId: "",
+            //   FileName: FileName,
+            //   FileType: FileType,
+            //   FileIsSync: false,
+            // });
+            if (FileIsSync === "true") {
+              FileIsSync = 'X'
+            }
+            if (FileIsSync === "false") {
+              FileIsSync = 'Y'
+            }
+            oModel.read(sPath, {
+              filters: [
+                new Filter("FileName", FilterOperator.EQ, FileName),
+                new Filter("FileType", FilterOperator.EQ, FileType),
+                new Filter("FileIsSync", FilterOperator.EQ, FileIsSync)
+              ],
+              success: function (oData, oResponse) {
+                jsonModel.setProperty("/filterInputConfigurations/secondFilterBarVisibility", true);
+                jsonModel.setProperty("/filesSet", that._createFolderStructure(oData.results));
+                jsonModel.setProperty("/filesSetForDocumentNameFilter", oData.results);
+                jsonModel.setProperty("/filesSetCount", oData.results.length);
+                that.getView().byId("idDocumentTreeTable").expandToLevel(999);
+                setTimeout(() => {
+                  that.getView().byId("idDocumentTreeTable").autoResizeColumn(0);
+                }, 300);
+                // that.getView().byId("idDocumentTreeTable").getColumns()[0].autoResize();
+                that.getView().byId("idDocumentTreeTable").setBusy(false);
+                resolve();
+              },
+              error: function (oResponse) {
+                // console.log(oResponse);
+                reject(oResponse); // Reject the promise
+              },
+            });
           });
         },
         _createFolder: function (path) {
